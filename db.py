@@ -1,14 +1,11 @@
 from sqlalchemy import create_engine, text
-import os 
+import os
 
-db_user = os.environ['DB_USERNAME']
-db_pass = os.environ['DB_PASSWORD']
-
-connection_string = "mysql+mysqlconnector://"+db_user+":"+db_pass+"@aws.connect.psdb.cloud/bibledb"
+connection_string = os.environ['DB_CONNECTION_STRING']
 engine = create_engine(connection_string)
 connection = engine.connect()
 
-connection.execute(text("CREATE TABLE IF NOT EXISTS example(id INTEGER, name VARCHAR(20))"))
+#connection.execute(text("CREATE TABLE IF NOT EXISTS example(id INTEGER, name VARCHAR(20))"))
 
 #connection.execute(text("INSERT INTO example (name) VALUES (:name)"), {"name": "Ashley"})
 #connection.execute(text("INSERT INTO example (name) VALUES (:name)"), [{"name": "Barry"}, {"name": "Christina"}])
