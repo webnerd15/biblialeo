@@ -8,32 +8,6 @@ engine = create_engine(
       "ssl_ca":"/etc/ssl/cert.pem"
     }
   })
-#dbc -> database_connection object
-#dbc = engine.connect()
-
-#dbc.execute(text("CREATE TABLE IF NOT EXISTS example(id INTEGER, name VARCHAR(20))"))
-
-#dbc.execute(text("INSERT INTO example (name) VALUES (:name)"), {"name": "Ashley"})
-#dbc.execute(text("INSERT INTO example (name) VALUES (:name)"), [{"name": "Barry"}, {"name": "Christina"}])
-#dbc.commit()
-
-#WHERE bible_kjv.book = :book AND bible_kjv.chapter = :chapter AND bible_kjv.verse= :verse"
-'''
-with engine.connect() as dbc:
-  sql = "SELECT bible_kjv.text, bible_books_en.fullname, bible_kjv.chapter, bible_kjv.verse FROM bible_kjv LEFT JOIN bible_books_en ON bible_kjv.book = bible_books_en.number LIMIT 0,5"
-  
-  result = dbc.execute(text(sql))
-
-  res_dict = []
-  for row in result.all():
-    print(row.fullname, row.chapter, row.verse, row.text)
-    res_dict.append([{"Title":row.fullname, "Chapter":row.chapter, "Verse":row.verse, "Text":row.text
-                     }])
-    #res_dict.append(dict(row))
-  print("===========================")
-  print(res_dict)
-  dbc.close()
-'''
 
 sql = "SELECT chapters FROM bible_books_en WHERE number = :book"
 with engine.connect() as dbc:
