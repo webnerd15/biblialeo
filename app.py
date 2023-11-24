@@ -1,25 +1,18 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import db, random
 
 app = Flask(__name__)
-
-BOOKS = [{
-  "Tastament": "Old",
-  "Titles": "12",
-}, {
-  "Testament": "New",
-  "Titles": "16"
-}]
-
+CORS(app)
 
 @app.route("/")
 def home():
   return "Biblia Leo Verson 0.1"
 
 
-@app.route("/api/<book>/<chapter>/<verse>")
+@app.route("/api/en/<book>/<chapter>/<verse>")
 def bible_books(book,chapter,verse):
-  return jsonify(db.fetch_a_verse(book,chapter,verse))
+  return jsonify(db.get_a_verse(book,chapter,verse))
 
 @app.route("/api/en/verselinestoday/<lines>")
 def verse_today(lines):

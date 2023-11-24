@@ -9,14 +9,16 @@ engine = create_engine(
     }
   })
 
+#=======
 sql = "SELECT chapters FROM bible_books_en WHERE number = :book"
 with engine.connect() as dbc:
   result = dbc.execute(text(sql),dict(book=2))
   chapters = result.first()[0]
   dbc.close()
   print(chapters)
+#=======
 
-def fetch_a_verse(book, chapter, verse):
+def get_a_verse(book, chapter, verse):
   sql = "SELECT bible_kjv.text, bible_books_en.fullname, bible_kjv.chapter, bible_kjv.verse FROM bible_kjv LEFT JOIN bible_books_en ON bible_kjv.book = bible_books_en.number WHERE bible_kjv.book = :book AND bible_kjv.chapter = :chapter AND bible_kjv.verse= :verse"
   
   with engine.connect() as dbc:
@@ -56,12 +58,15 @@ def get_random_verse(number_of_lines):
   
   with engine.connect() as dbc:
     result = dbc.execute(text(sql), dict(book=book,chapter=random_chapter,start_verse=start_verse,number_of_lines=number_of_lines))
-    
-    res_dict = []
-    for row in result.all():
-      res_dict.append([{"Title":row.fullname, "Chapter":row.chapter, "Verse":row.verse, "Text":row.text}])
-    
-    dbc.close()
-    
-    return res_dict
+    if(result):
+      res_dict = []
+      for row in result.all():
+        res_dict.append([{"Title":row.fullname, "Chapter":row.chapter, "Verse":row.verse, "Text":row.text}])
+      dbc.close()
+      return res_dict
+    else:
+      res_dict = get_a_verse(50, 4, 13)
+         
+      dbc.close()      
+      return res_dict
     
